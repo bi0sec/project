@@ -41,7 +41,11 @@ export function Login() {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 justify-center items-start">
+        <div className="flex flex-col gap-8 justify-center items-center">
+          <div className="flex-1 w-full max-w-md">
+            <LocalLogin />
+          </div>
+
           <div className="flex-1 w-full max-w-md">
             <div className="bg-white p-8 rounded-lg shadow-md">
               <h3 className="text-xl font-bold mb-4">Azure AD Login</h3>
@@ -58,10 +62,6 @@ export function Login() {
                 {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
               </button>
             </div>
-          </div>
-
-          <div className="flex-1 w-full max-w-md">
-            <LocalLogin />
           </div>
         </div>
       </div>

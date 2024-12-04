@@ -8,11 +8,6 @@ import { Quiz } from './components/Quiz';
 import { Certificate } from './components/Certificate';
 import { useAuthStore } from './store/authStore';
 import { useLocalAuthStore } from './store/localAuthStore';
-import { useAdminStore } from './store/adminStore';
-import { AdminDashboard } from './components/AdminDashboard';
-import { UserManagement } from './components/UserManagement';
-import { TrainingManagement } from './components/TrainingManagement';
-import { Dashboard } from './components/Dashboard';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { accounts } = useMsal();
@@ -24,7 +19,6 @@ function App() {
   const { instance, accounts } = useMsal();
   const { setUser, setIsAuthenticated } = useAuthStore();
   const localUser = useLocalAuthStore((state) => state.user);
-  const isAdmin = useAdminStore((state) => state.isAdmin);
 
   React.useEffect(() => {
     instance.handleRedirectPromise().catch(error => {
@@ -42,44 +36,85 @@ function App() {
     }
   }, [accounts, instance, setUser, setIsAuthenticated]);
 
+  // If using local authentication
+  if (localUser?.isAuthenticated) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/training" replace />} />
+            <Route
+              path="training"
+              element={
+                <PrivateRoute>
+                  <TrainingViewer />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="quiz"
+              element={
+                <PrivateRoute>
+                  <Quiz />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="certificate"
+              element={
+                <PrivateRoute>
+                  <Certificate />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/training" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        
-        {/* Admin Routes */}
-        <Route
-          path="/admin/*"
-          element={
-            <PrivateRoute>
-              {isAdmin ? (
-                <Routes>
-                  <Route path="/" element={<AdminDashboard />} />
-                  <Route path="users" element={<UserManagement />} />
-                  <Route path="trainings" element={<TrainingManagement />} />
-                </Routes>
-              ) : (
-                <Navigate to="/" replace />
-              )}
-            </PrivateRoute>
-          }
-        />
+      <UnauthenticatedTemplate>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </UnauthenticatedTemplate>
 
-        {/* User Routes */}
-        <Route
-          path="/*"
-          element={
-            <PrivateRoute>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="training" element={<TrainingViewer />} />
-                <Route path="quiz" element={<Quiz />} />
-                <Route path="certificate" element={<Certificate />} />
-              </Routes>
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+      <AuthenticatedTemplate>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/training" replace />} />
+            <Route
+              path="training"
+              element={
+                <PrivateRoute>
+                  <TrainingViewer />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="quiz"
+              element={
+                <PrivateRoute>
+                  <Quiz />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="certificate"
+              element={
+                <PrivateRoute>
+                  <Certificate />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/training" replace />} />
+          </Route>
+        </Routes>
+      </AuthenticatedTemplate>
     </BrowserRouter>
   );
 }

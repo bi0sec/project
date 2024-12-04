@@ -5,17 +5,11 @@ import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from './config/authConfig';
 import App from './App.tsx';
 import './index.css';
-import { initializeStores } from './utils/initializeStores';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
 // Default to using redirect in production and popup in development
 const isRedirectEnabled = import.meta.env.PROD;
-
-// Initialize stores if needed
-if (!localStorage.getItem('training-storage')) {
-  initializeStores();
-}
 
 msalInstance.initialize().then(() => {
   // Handle redirect promise after initialization

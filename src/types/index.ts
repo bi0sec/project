@@ -1,54 +1,33 @@
 export interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
   role: 'admin' | 'user';
   groups: string[];
   completedTraining: boolean;
-  lastTrainingDate?: Date;
 }
 
 export interface Training {
   id: string;
   title: string;
   description: string;
-  slides: Slide[];
-  assignedTo: {
-    users: string[];
-    groups: string[];
-  };
+  content: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface Slide {
-  id: string;
-  title: string;
-  content: string;
-  image?: string;
-}
-
-export interface Question {
-  id: string;
-  text: string;
-  options: string[];
-  correctAnswer: number;
 }
 
 export interface TrainingProgress {
   userId: string;
   trainingId: string;
-  currentSlide: number;
   completed: boolean;
-  quizCompleted: boolean;
-  quizScore?: number;
-  certificateGenerated: boolean;
-  completedAt?: Date;
+  score?: number;
+  lastAccessed: Date;
 }
 
-export interface UserGroup {
+export interface Group {
   id: string;
   name: string;
   description: string;
-  members: string[];
+  members: string[]; // User IDs
+  trainings: string[]; // Training IDs
 }

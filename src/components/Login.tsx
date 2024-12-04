@@ -30,7 +30,7 @@ export function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full space-y-8">
+      <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <Shield className="mx-auto h-12 w-12 text-blue-600" />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
@@ -41,27 +41,25 @@ export function Login() {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 justify-center items-start">
-          <div className="flex-1 w-full max-w-md">
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold mb-4">Azure AD Login</h3>
-              {error && (
-                <div className="rounded-md bg-red-50 p-4 mb-4">
-                  <div className="text-sm text-red-700">{error}</div>
-                </div>
-              )}
-              <button
-                onClick={handleLogin}
-                disabled={isLoading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
-              </button>
-            </div>
+        <div className="space-y-8">
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <LocalLogin />
           </div>
 
-          <div className="flex-1 w-full max-w-md">
-            <LocalLogin />
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <h3 className="text-xl font-bold mb-4">Azure AD Login</h3>
+            {error && (
+              <div className="rounded-md bg-red-50 p-4 mb-4">
+                <div className="text-sm text-red-700">{error}</div>
+              </div>
+            )}
+            <button
+              onClick={handleLogin}
+              disabled={isLoading}
+              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            >
+              {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
+            </button>
           </div>
         </div>
       </div>

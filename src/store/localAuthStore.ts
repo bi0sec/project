@@ -15,7 +15,7 @@ export const useLocalAuthStore = create<LocalAuthState>((set) => ({
   user: null,
   login: (username: string, password: string) => {
     // Simple test credentials check
-    if (username === 'test' && password === 'test') {
+    if ((username === 'test' && password === 'test') || (username === 'admin' && password === 'admin')) {
       set({ user: { username, isAuthenticated: true } });
       return true;
     }
